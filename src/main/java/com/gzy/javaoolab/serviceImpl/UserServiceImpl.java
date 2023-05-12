@@ -1,12 +1,12 @@
-package com.zhidian.login.serviceImpl;
+package com.gzy.javaoolab.serviceImpl;
 
-import com.zhidian.login.dao.UserMapper;
-import com.zhidian.login.entity.User;
-import com.zhidian.login.service.UserService;
-import com.zhidian.login.vo.Result;
+import com.gzy.javaoolab.dao.UserMapper;
+import com.gzy.javaoolab.entity.User;
+import com.gzy.javaoolab.service.UserService;
+import com.gzy.javaoolab.vo.Result;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +55,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User loadByMail(String mail) {
+    public List<User> loadAll() {
+        //TODO
+        return null;
+    }
+
+    @Override
+    public User loadByName(String mail) {
         return userMapper.loadByMail(mail);
     }
 
@@ -80,9 +86,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Object register(String name, String mail, String password) {
+    public Object register(String name, String password) {
         User user=new User();
-        user.setMail(mail);
         user.setUsername(name);
         user.setPassword(password);
         //TODO:设置其他默认值？

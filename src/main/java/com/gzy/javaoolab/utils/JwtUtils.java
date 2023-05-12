@@ -1,4 +1,4 @@
-package com.zhidian.login.utils;
+package com.gzy.javaoolab.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -73,3 +73,5 @@ public class JwtUtils {
 
 
 }
+
+

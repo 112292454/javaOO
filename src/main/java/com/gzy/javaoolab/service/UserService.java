@@ -1,7 +1,8 @@
-package com.zhidian.login.service;
+package com.gzy.javaoolab.service;
 
-import com.zhidian.login.entity.User;
+import com.gzy.javaoolab.entity.User;
 
+import java.util.List;
 import java.util.Map;
 /**
  * @description user
@@ -30,9 +31,11 @@ public interface UserService {
 	 */
 	public User load(String id);
 
-	public User loadByMail(String mail);
+	public List<User> loadAll();
 
-	public boolean contains(String mail);
+	public User loadByName(String name);
+
+	public boolean contains(String name);
 	/**
 	 * 分页查询
 	 */
@@ -41,5 +44,5 @@ public interface UserService {
 	/**
 	 * 初始注册，即带有初始化的的插入
 	 */
-	public Object register(String name,String mail,String password);
+	public Object register(String name,String password);
 }

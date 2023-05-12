@@ -1,4 +1,4 @@
-package com.zhidian.login.config;
+package com.gzy.javaoolab.config;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,7 @@ public class SwaggerConfig {
                 .host("localhost:15511")//可不要
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.zhidian.login.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.gzy.javaoolab.controller"))
                 //.apis(RequestHandlerSelectors.withClassAnnotation(Api.class))          //只扫描有api注解的类
                 .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))//只扫描有ApiOperation注解的方法
                 .build();

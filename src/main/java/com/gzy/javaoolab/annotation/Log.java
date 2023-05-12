@@ -1,4 +1,4 @@
-package com.zhidian.login.annotation;
+package com.gzy.javaoolab.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

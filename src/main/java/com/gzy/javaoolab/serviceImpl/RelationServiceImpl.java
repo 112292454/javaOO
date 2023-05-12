@@ -1,5 +1,7 @@
-package com.gzy.javaoolab.serviceImpl;public class RelationServiceImpl {
-    public static void main(String[] args){
-        
-    }
+package com.gzy.javaoolab.serviceImpl;
+
+import com.gzy.javaoolab.service.RelationService;
+
+public class RelationServiceImpl implements RelationService {
+
 }

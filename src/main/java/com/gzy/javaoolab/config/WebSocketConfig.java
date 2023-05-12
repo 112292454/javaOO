@@ -1,33 +1,54 @@
 package com.gzy.javaoolab.config;
 
-
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 /**
- * @author： xxt
- * @date： 2022/5/23 16:22
- * @Description： 开启WebSocket支持
+
+ * @author buhao
+
+ * @version WebSocketConfig.java, v 0.1 2019-10-21 16:32 buhao
+
  */
 
 @Configuration
-public class WebSocketConfig implements ServletContextInitializer {
 
-    /**
-     * 这个bean的注册,用于扫描带有@ServerEndpoint的注解成为websocket,如果你使用外置的tomcat就不需要该配置文件
-     */
-    @Bean
-    public ServerEndpointExporter serverEndpointExporter() {
-        return new ServerEndpointExporter();
+@EnableWebSocketMessageBroker
+
+public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
+
+    @Override
+
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+
+        // 配置客户端尝试连接地址
+
+        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
+
     }
 
     @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
+
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+
+        // 设置广播节点
+
+        registry.enableSimpleBroker("/group", "/chat");
+
+        // 客户端向服务端发送消息需有/app 前缀
+
+        registry.setApplicationDestinationPrefixes("/app");
+
+        // 指定用户发送（一对一）的前缀 /user/
+
+        registry.setUserDestinationPrefix("/chat/");
 
     }
 

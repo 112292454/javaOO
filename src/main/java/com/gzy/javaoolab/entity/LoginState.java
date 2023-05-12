@@ -1,4 +1,4 @@
-package com.zhidian.login.entity;
+package com.gzy.javaoolab.entity;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -1,6 +1,6 @@
-package com.zhidian.login.dao;
+package com.gzy.javaoolab.dao;
 
-import com.zhidian.login.entity.User;
+import com.gzy.javaoolab.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 

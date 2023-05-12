@@ -1,10 +1,10 @@
-package com.zhidian.login.serviceImpl;
+package com.gzy.javaoolab.serviceImpl;
 
 
-import com.zhidian.login.dao.LoginStateMapper;
-import com.zhidian.login.entity.LoginState;
-import com.zhidian.login.service.LoginStateService;
-import com.zhidian.login.vo.Result;
+import com.gzy.javaoolab.dao.LoginStateMapper;
+import com.gzy.javaoolab.entity.LoginState;
+import com.gzy.javaoolab.service.LoginStateService;
+import com.gzy.javaoolab.vo.Result;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

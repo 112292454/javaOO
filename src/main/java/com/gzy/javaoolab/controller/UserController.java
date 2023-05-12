@@ -1,15 +1,16 @@
-package com.zhidian.login.controller;
+package com.gzy.javaoolab.controller;
 
-import com.zhidian.login.entity.User;
-import com.zhidian.login.service.UserService;
-import com.zhidian.login.vo.Result;
+import com.gzy.javaoolab.entity.User;
+import com.gzy.javaoolab.service.UserService;
+import com.gzy.javaoolab.vo.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.Resource;
 import javax.validation.constraints.Pattern;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,18 +28,24 @@ public class UserController {
 
 
 	@ApiOperation(value ="注册用简化接口，至少提供用户名、密码、邮箱。无返回数据，200即注册成功")
-	@GetMapping("/register")
+	@PostMapping("/register")
 	@ResponseBody
 	public Result<String> register(
-			@ApiParam(value = "姓名") @Pattern (regexp = "[\\w\\d 一-龟]{2,20}") @RequestParam("name") String name,
-			@ApiParam(value = "邮箱") @Pattern (regexp = "(\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*)|^$") @RequestParam("mail") String mail,
-			@ApiParam(value = "密码") @Pattern (regexp = "[\\w\\d]{6,20}") @RequestParam("password") String password) {
+			@ApiParam(value = "用户名") @Pattern(regexp = "\\w{6,20}") @RequestParam("name") String name,
+			@ApiParam(value = "密码") @Pattern(regexp = "\\w{6,20}") @RequestParam("password") String password) {
 
 		/*TODO:验证码*/
-		if(userService.contains(mail)) throw new IllegalArgumentException("用户已存在");
-		userService.register(name, mail, password);
+		if(userService.contains(name)) throw new IllegalArgumentException("用户已存在");
+		userService.register(name, password);
 		return Result.success();
 	}
+
+	@GetMapping("/register")
+	@ResponseBody
+	public Result<List<User>> listAllUSer() {
+		return Result.<List<User>>success("成功获取所有用户信息，但建议不要用这个接口").data(userService.loadAll());
+	}
+
 
 	/**
 	 * 新增

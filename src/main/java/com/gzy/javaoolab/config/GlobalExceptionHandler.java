@@ -1,6 +1,6 @@
-package com.zhidian.login.config;
+package com.gzy.javaoolab.config;
 
-import com.zhidian.login.vo.Result;
+import com.gzy.javaoolab.vo.Result;
 import org.apache.http.HttpException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,19 +1,20 @@
-package com.zhidian.login.controller;
+package com.gzy.javaoolab.controller;
 
-import com.zhidian.login.entity.User;
-import com.zhidian.login.service.UserService;
-import com.zhidian.login.utils.JwtUtils;
-import com.zhidian.login.vo.Result;
+import com.gzy.javaoolab.entity.User;
+import com.gzy.javaoolab.service.UserService;
+import com.gzy.javaoolab.utils.JwtUtils;
+import com.gzy.javaoolab.vo.Result;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,17 +39,14 @@ public class LoginController {
 			@ApiResponse(code = 200,message = "生成的token"),
 			@ApiResponse(code = 401,message = "密码与邮箱不对应")
 	})
-	@ApiOperation(value = "登陆接口",notes="login返回一个token，访问需要带着该token，一小时失效，最后10%有效期登陆会刷新token")
+	@ApiOperation(value = "登陆接口",notes="login返回一个token，访问需要带着该token，一小时失效，最后10%有效期访问会刷新token")
 	public Result<String> login(
 			@RequestBody Map<String,String> map){
-		String mail=map.get("mail"),password=map.get("password");
-		/*
-		@Pattern (regexp = "(\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*)|^$") @RequestParam("mail") String mail,
-		@Pattern (regexp = "[\\w\\d]{6,20}") @RequestParam("password") String password
-		*/
+		String mail=map.get("name"),password=map.get("password");
+
 		/*TODO:校验合法*/
 		/*TODO:验证码*/
-		User user=userService.loadByMail(mail);
+		User user=userService.loadByName(mail);
 
 
 		if(user==null||!user.getPassword().equals(password)){

@@ -1,20 +1,19 @@
-package com.zhidian.login.filter;
+package com.gzy.javaoolab.filter;
 
-import com.zhidian.login.entity.User;
-import com.zhidian.login.service.UserService;
-import com.zhidian.login.utils.JwtUtils;
+import com.gzy.javaoolab.entity.User;
+import com.gzy.javaoolab.service.UserService;
+import com.gzy.javaoolab.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
+import jakarta.annotation.Resource;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-
-import javax.annotation.Resource;
-import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;

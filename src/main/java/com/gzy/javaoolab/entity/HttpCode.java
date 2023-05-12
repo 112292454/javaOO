@@ -1,4 +1,4 @@
-package com.zhidian.login.entity;
+package com.gzy.javaoolab.entity;
 
 import java.util.EnumSet;
 import java.util.HashMap;

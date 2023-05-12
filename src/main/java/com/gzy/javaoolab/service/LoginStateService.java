@@ -1,6 +1,6 @@
-package com.zhidian.login.service;
+package com.gzy.javaoolab.service;
 
-import com.zhidian.login.entity.LoginState;
+import com.gzy.javaoolab.entity.LoginState;
 
 import java.util.Map;
 /**
