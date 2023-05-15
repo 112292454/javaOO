@@ -41,9 +41,11 @@ public interface UserMapper {
 	 * @author gzy
 	 * @date 2022/11/09
 	 **/
-	User load(String id);
+	User load(Integer id);
 
 	User loadByMail(String mail);
+
+	List<User> loadAllInList(List<Integer> ids);
 	/**
 	 * 查询 分页查询
 	 * @author gzy

@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User load(String id) {
+    public User load(Integer id) {
         return userMapper.load(id);
     }
 

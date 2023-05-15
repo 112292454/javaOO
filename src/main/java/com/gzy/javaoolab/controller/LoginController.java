@@ -55,7 +55,7 @@ public class LoginController {
 			Map<String,Object> data=new HashMap<>();
 			//data.put("userID", user.getUserId());
 			data.put("mail",user.getMail());
-			String token= jwtUtils.createJwt(user.getUserId(),user.getUsername(),data);
+			String token= jwtUtils.createJwt(String.valueOf(user.getUserId()),user.getUsername(),data);
 			return Result.<String>success("登陆成功").data(token);
 		}
 	}

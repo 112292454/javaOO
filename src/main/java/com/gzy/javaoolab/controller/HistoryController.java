@@ -30,8 +30,8 @@ public class HistoryController {
 	@PostMapping("/group")
 	//TODO
 	public Result<?> getGroupHistory(String user, String group) {
-		List<Message> msgHistory = messageService.getMsgHistory(from, to);
-		messageService.setMessageViewed(from, to);
+		List<Message> msgHistory = messageService.getMsgHistory(user, group);
+		messageService.setMessageViewed(user, group);
 
 		return Result.<List<Message>>success("成功获取历史记录").data(msgHistory);	}
 }

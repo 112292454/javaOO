@@ -5,9 +5,9 @@ import com.gzy.javaoolab.dao.LoginStateMapper;
 import com.gzy.javaoolab.entity.LoginState;
 import com.gzy.javaoolab.service.LoginStateService;
 import com.gzy.javaoolab.vo.Result;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

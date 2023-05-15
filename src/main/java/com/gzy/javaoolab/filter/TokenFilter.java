@@ -77,11 +77,11 @@ public class TokenFilter implements Filter {
                         rep.setHeader("msg", "token is overtime！");
                         return;//不允许继续
                     } else if (validTime < failureTime / 10) {
-                        User user = userService.load(userId);
+                        User user = userService.load(Integer.valueOf(userId));
                         logger.info("token的有效期小于过期时间的10%！");
                         Map<String, Object> data = new HashMap<>();
                         data.put("mail", user.getMail());
-                        String newToken = jwtUtils.createJwt(user.getUserId(), user.getUsername(), data);
+                        String newToken = jwtUtils.createJwt(user.getUserId()+"", user.getUsername(), data);
                         logger.info("已生成新的token：" + newToken);
                         rep.setHeader("code", String.valueOf(HttpServletResponse.SC_OK));
                         rep.setHeader("msg", "token has refreshed！");

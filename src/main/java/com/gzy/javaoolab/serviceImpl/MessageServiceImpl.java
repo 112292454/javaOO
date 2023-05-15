@@ -2,36 +2,73 @@ package com.gzy.javaoolab.serviceImpl;
 
 import com.gzy.javaoolab.entity.Message;
 import com.gzy.javaoolab.service.MessageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class MessageServiceImpl implements MessageService {
+
+	@Autowired
+	private SimpMessagingTemplate simpMessagingTemplate;
+
+	@Override
+	public boolean sendMsg(Message message) {
+		//TODO
+
+		return true;
+	}
+
+	@Override
+	public boolean sendMsg(String from, String to, String msg) {
+		//TODO
+		return sendMsg(persistenceMessage(from, to, msg));
+	}
 
 	@Override
 	public boolean persistenceMessage(Message message) {
-		return false;
+		//TODO
+		return true;
 	}
 
 	@Override
 	public Message persistenceMessage(String from, String to, String msg) {
-		Message message=new Message();
+		Message message = new Message(from,to,msg);
+		//TODO
 
+		return message;
+	}
+
+	@Override
+	public Message persistenceGroupMessage(String from, String group, String msg) {
+		Message message = new Message(Integer.parseInt(from), Integer.parseInt(group), msg);
+		//TODO
 
 		return message;
 	}
 
 	@Override
 	public boolean setMessageViewed(String user, String target) {
-		return false;
+		//TODO
+		return true;
 	}
 
 	@Override
 	public List<Message> getMsgHistory(String from, String to) {
-		return null;
+		List<Message> res=new ArrayList<>();
+		//TODO
+
+		return res;
 	}
 
 	@Override
 	public Message loadById(String id) {
-		return null;
+		//TODO
+
+
+		return new Message(1,1,"test msg");
 	}
 }

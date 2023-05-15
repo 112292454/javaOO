@@ -1,7 +1,8 @@
 package com.gzy.javaoolab.config;
 
 import com.gzy.javaoolab.vo.Result;
-import org.apache.http.HttpException;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.xml.ws.http.HTTPException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author gzy
@@ -25,8 +25,8 @@ public class GlobalExceptionHandler {
 	 * @param e
 	 * @return
 	 */
-	@ExceptionHandler(HttpException.class)
-	public Result httpExceptionHandler(HttpException e) {
+	@ExceptionHandler(HTTPException.class)
+	public Result httpExceptionHandler(HTTPException e) {
 		return Result.error(e.getMessage());
 	}
 

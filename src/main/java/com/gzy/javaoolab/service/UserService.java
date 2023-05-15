@@ -29,7 +29,7 @@ public interface UserService {
 	/**
 	 * 根据主键 id 查询
 	 */
-	public User load(String id);
+	User load(Integer id);
 
 	public List<User> loadAll();
 

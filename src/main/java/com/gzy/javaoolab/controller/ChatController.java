@@ -15,7 +15,6 @@ import java.util.concurrent.CompletableFuture;
 
 @Controller("/chat")
 public class ChatController {
-//TODO
 
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
@@ -23,13 +22,8 @@ public class ChatController {
 	@Autowired
 	MessageService messageService;
 
-	HashMap<Long,Message> waitForAck=new HashMap<>();
+	HashMap<Integer, Message> waitForAck=new HashMap<>();
 
-	//从from收到，入库，并转发给to
-//	@PostMapping("/send")
-//	public Result<?> sendMessage(String from, String to, String msg) {
-//
-//	}
 
 	@GetMapping("/sendMsgToUser")
 	@ResponseBody
@@ -51,10 +45,10 @@ public class ChatController {
 			}
 			if(waitForAck.containsKey(message.getId())){
 				simpMessagingTemplate.convertAndSendToUser(from, "/ack",
-						Result.success("对方在线").data(message.getTo()));
+						Result.success("对方在线").data(message.getDest()));
 			}else{
 				simpMessagingTemplate.convertAndSendToUser(from, "/ack",
-						Result.error("对方离线").data(message.getTo()));
+						Result.error("对方离线").data(message.getDest()));
 			}
 			waitForAck.remove(message.getId());
 			return null;

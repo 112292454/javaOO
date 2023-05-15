@@ -85,7 +85,7 @@ public class UserController {
 	 **/
 	@RequestMapping("/load")
 	public Result<User> load(String id){
-		User user=userService.load(id);
+		User user=userService.load(Integer.valueOf(id));
 		return Result.<User>success().data(user);
 	}
 
