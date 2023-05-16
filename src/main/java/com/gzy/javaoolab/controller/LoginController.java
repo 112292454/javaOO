@@ -5,14 +5,15 @@ import com.gzy.javaoolab.service.UserService;
 import com.gzy.javaoolab.utils.JwtUtils;
 import com.gzy.javaoolab.vo.Result;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import jakarta.validation.constraints.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.HashMap;
@@ -27,6 +28,7 @@ import java.util.Map;
 @RequestMapping(value = "/user")
 public class LoginController {
 
+	Logger logger= LoggerFactory.getLogger(LoginController.class);
 
 	@Resource
 	private UserService userService;
@@ -41,12 +43,13 @@ public class LoginController {
 	})
 	@ApiOperation(value = "登陆接口",notes="login返回一个token，访问需要带着该token，一小时失效，最后10%有效期访问会刷新token")
 	public Result<String> login(
-			@RequestBody Map<String,String> map){
-		String mail=map.get("name"),password=map.get("password");
+			@ApiParam(value = "用户名") @Pattern(regexp = "\\w{6,20}") @RequestParam("name") String name,
+			@ApiParam(value = "密码") @Pattern(regexp = "\\w{6,20}") @RequestParam("password") String password){
+		logger.info("登录，用户名{}，密码{}",name,password);
 
 		/*TODO:校验合法*/
 		/*TODO:验证码*/
-		User user=userService.loadByName(mail);
+		User user=userService.loadByName(name);
 
 
 		if(user==null||!user.getPassword().equals(password)){
@@ -54,8 +57,8 @@ public class LoginController {
 		}else{
 			Map<String,Object> data=new HashMap<>();
 			//data.put("userID", user.getUserId());
-			data.put("mail",user.getMail());
-			String token= jwtUtils.createJwt(String.valueOf(user.getUserId()),user.getUsername(),data);
+			data.put("email",user.getEmail());
+			String token= jwtUtils.createJwt(String.valueOf(user.getId()),user.getName(),data);
 			return Result.<String>success("登陆成功").data(token);
 		}
 	}

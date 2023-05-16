@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface MessageService {
 
-	boolean sendMsg(Message message);
+	Message sendMsg(Message message);
 
-	boolean sendMsg(String from, String to, String msg);
+	Message sendMsg(String from, String to, String msg);
 
 	boolean persistenceMessage(Message message);
 

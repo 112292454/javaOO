@@ -21,7 +21,7 @@ public class GroupServiceImpl implements GroupService {
 	MessageService messageService;
 
 	@Autowired
-	UserMapper userMapper;
+	private UserMapper userMapper;
 
 	@Override
 	public Result<Group> senMsg(String from, String group, String msg) {
@@ -29,7 +29,8 @@ public class GroupServiceImpl implements GroupService {
 		Message message = messageService.persistenceGroupMessage(from, group, msg);
 		Result<Group> groupResult = groupInfo(group);
 		if(groupResult.isSuccess()){
-			List<User> users = userMapper.loadAllInList(groupResult.getData().getMembers());
+			//TODO:batch
+			List<User> users = batchLoad(/*groupResult.getData().getMembers()*/"");
 			for (User user : users) {
 				//TODO:并发
 				messageService.sendMsg(message);
@@ -86,5 +87,15 @@ public class GroupServiceImpl implements GroupService {
 		//TODO
 
 		return Result.<Group>success().data(res);
+	}
+
+	private String buildString(List<Integer> ids){
+
+		return "";
+	}
+
+	private List<User> batchLoad(String ids){
+
+		return new ArrayList<>();
 	}
 }

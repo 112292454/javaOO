@@ -7,13 +7,15 @@ import com.gzy.javaoolab.vo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
 import java.util.concurrent.CompletableFuture;
 
 @Controller("/chat")
+@RequestMapping(value = "/chat")
 public class ChatController {
 
 	@Autowired
@@ -25,19 +27,16 @@ public class ChatController {
 	HashMap<Integer, Message> waitForAck=new HashMap<>();
 
 
-	@GetMapping("/sendMsgToUser")
+	@PostMapping("/send")
 	@ResponseBody
 	public Result<?> sendMsgToUser(String from, String to, String msg) {
 		//消息入库，给可能没有在线的to用户之后看
-		Message message=messageService.persistenceMessage(from, to, msg);
+		Message message=messageService.sendMsg(from, to, msg);
 		//转发给to，这里待定to要不要回一个ack，来立刻确认to已读这条信息
 		waitForAck.put(message.getId(), message);
-		simpMessagingTemplate.convertAndSendToUser(from, "/", message);
 
-		//设置from用户既然已经发消息了，那默认他已经看完了上面的历史记录
-		messageService.setMessageViewed(from,to);
 
-		CompletableFuture.supplyAsync(()->{
+		CompletableFuture.supplyAsync(()->{//TODO:要有這個嗎
 			try {
 				Thread.sleep(1500);
 			} catch (InterruptedException e) {
@@ -57,12 +56,12 @@ public class ChatController {
 		return Result.success("成功发送");
 	}
 
-	@GetMapping("/ackMsg")
+	@PostMapping("/ack")
 	@ResponseBody
-	public Result<?> ackMsg(String from,String msgID) {
+	public Result<?> ackMsg(String from,String msgId) {
 //		Message message=messageService.loadById(msgID);
 
-		waitForAck.remove(Long.parseLong(msgID));
+		waitForAck.remove(Long.parseLong(msgId));
 
 		//设置from用户对消息来源的用户做出ack
 //		messageService.setMessageViewed(from,message.getFrom());

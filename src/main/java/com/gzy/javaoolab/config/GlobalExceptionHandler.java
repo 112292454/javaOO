@@ -1,14 +1,14 @@
 package com.gzy.javaoolab.config;
 
 import com.gzy.javaoolab.vo.Result;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.xml.ws.http.HTTPException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 
 /**
@@ -20,15 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class GlobalExceptionHandler {
 
 	private static Logger logger= LoggerFactory.getLogger(GlobalExceptionHandler.class);
-	/**
-	 * http 异常处理
-	 * @param e
-	 * @return
-	 */
-	@ExceptionHandler(HTTPException.class)
-	public Result httpExceptionHandler(HTTPException e) {
-		return Result.error(e.getMessage());
-	}
 
 	/**
 	 * 验证失败异常处理

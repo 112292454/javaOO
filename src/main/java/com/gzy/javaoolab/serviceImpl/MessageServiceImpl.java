@@ -15,15 +15,20 @@ public class MessageServiceImpl implements MessageService {
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
 
+
 	@Override
-	public boolean sendMsg(Message message) {
+	public Message sendMsg(Message message) {
 		//TODO
 
-		return true;
+		simpMessagingTemplate.convertAndSendToUser(String.valueOf(message.getSourceUser()), "/", message);
+
+		//设置from用户既然已经发消息了，那默认他已经看完了上面的历史记录
+		setMessageViewed(message.getSourceUser()+"",message.getDest()+"");
+		return message;
 	}
 
 	@Override
-	public boolean sendMsg(String from, String to, String msg) {
+	public Message sendMsg(String from, String to, String msg) {
 		//TODO
 		return sendMsg(persistenceMessage(from, to, msg));
 	}
@@ -52,6 +57,7 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public boolean setMessageViewed(String user, String target) {
+
 		//TODO
 		return true;
 	}
@@ -59,6 +65,9 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public List<Message> getMsgHistory(String from, String to) {
 		List<Message> res=new ArrayList<>();
+		for (int i = 0; i < 5; i++) {
+			res.add(new Message(i,i,"test msg"+i));
+		}
 		//TODO
 
 		return res;

@@ -1,134 +1,53 @@
 package com.gzy.javaoolab.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
+
 /**
  * @description user
- * @author gzy
- * @date 2022-11-09
+ * @author zhengkai.blog.csdn.net
+ * @date 2023-05-16
  */
 @Data
-@ApiModel("user")
 public class User implements Serializable {
 
-	private static final long serialVersionUID = 78456879546513268L;
+	private static final long serialVersionUID = 1L;
+
+	@TableId(type = IdType.AUTO)
 
 	/**
-	 * 用户ID
+	 * name
 	 */
-	@ApiModelProperty("用户ID")
-	private Integer userId;
+	private Integer id;
 
 	/**
-	 * 用户名
+	 * name
 	 */
-	@ApiModelProperty("用户名")
-	private String username;
+	private String name;
 
 	/**
-	 * 邮箱
+	 * last_login
 	 */
-	@ApiModelProperty("邮箱")
-	private String mail;
+	private Date lastLogin;
 
 	/**
-	 * 头像token
+	 * email
 	 */
-	@ApiModelProperty("头像token")
-	private String avatar;
+	private String email;
 
 	/**
-	 * 密码
+	 * avatar_id
 	 */
-	@ApiModelProperty("密码")
+	private Integer avatarId;
+
+	/**
+	 * password
+	 */
 	private String password;
-
-	/**
-	 * 注册ip
-	 */
-	@ApiModelProperty("注册ip")
-	private String createIp;
-
-	/**
-	 * 最后登陆ip
-	 */
-	@ApiModelProperty("最后登陆ip")
-	private String lastLoginIp;
-
-	/**
-	 * 个人简介
-	 */
-	@ApiModelProperty("个人简介")
-	private String bio;
-
-	/**
-	 * 个人主页
-	 */
-	@ApiModelProperty("个人主页")
-	private String blog;
-
-	/**
-	 * 关注我的人数
-	 */
-	@ApiModelProperty("关注我的人数")
-	private Integer followerCount;
-
-	/**
-	 * 我关注的人数
-	 */
-	@ApiModelProperty("我关注的人数")
-	private Integer followeeCount;
-
-	/**
-	 * 我关注的文章数
-	 */
-	@ApiModelProperty("我关注的文章数")
-	private Integer followingArticleCount;
-
-	/**
-	 * 我关注的视频数
-	 */
-	@ApiModelProperty("我关注的视频数")
-	private Integer followingVideoCount;
-
-	/**
-	 * 我发表的文章数量
-	 */
-	@ApiModelProperty("我发表的文章数量")
-	private Integer articleCount;
-
-	/**
-	 * 我发表的视频数量
-	 */
-	@ApiModelProperty("我发表的视频数量")
-	private Integer videoCount;
-
-	/**
-	 * 未读通知数
-	 */
-	@ApiModelProperty("未读通知数")
-	private Integer notificationUnread;
-
-	/**
-	 * 未读私信数
-	 */
-	@ApiModelProperty("未读私信数")
-	private Integer inboxUnread;
-
-	/**
-	 * 注册时间
-	 */
-	@ApiModelProperty("注册时间")
-	private Integer createTime;
-
-	/**
-	 * 最后登录时间
-	 */
-	@ApiModelProperty("最后登录时间")
-	private Integer lastLoginTime;
 
 	public User() {}
 }

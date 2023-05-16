@@ -61,13 +61,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User loadByName(String mail) {
-        return userMapper.loadByMail(mail);
+    public User loadByName(String name) {
+        return userMapper.loadByName(name);
     }
 
     @Override
-    public boolean contains(String mail) {
-        User user=userMapper.loadByMail(mail);
+    public boolean contains(String name) {
+        User user=userMapper.loadByName(name);
         return user!=null;
     }
 
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object register(String name, String password) {
         User user=new User();
-        user.setUsername(name);
+        user.setName(name);
         user.setPassword(password);
         //TODO:设置其他默认值？
         return this.insert(user);

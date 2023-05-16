@@ -7,8 +7,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import jakarta.annotation.Resource;
+import jakarta.validation.constraints.Pattern;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.constraints.Pattern;
 
 import java.util.List;
 import java.util.Map;
@@ -23,18 +25,19 @@ import java.util.Map;
 @Api
 public class UserController {
 
+	Logger logger= LoggerFactory.getLogger(UserController.class);
 	@Resource
 	private UserService userService;
 
 
-	@ApiOperation(value ="注册用简化接口，至少提供用户名、密码、邮箱。无返回数据，200即注册成功")
+	@ApiOperation(value ="注册用简化接口，至少提供用户名、密码。无返回数据，200即注册成功")
 	@PostMapping("/register")
 	@ResponseBody
 	public Result<String> register(
 			@ApiParam(value = "用户名") @Pattern(regexp = "\\w{6,20}") @RequestParam("name") String name,
 			@ApiParam(value = "密码") @Pattern(regexp = "\\w{6,20}") @RequestParam("password") String password) {
-
 		/*TODO:验证码*/
+		logger.info("注册，用户名{}，密码{}",name,password);
 		if(userService.contains(name)) throw new IllegalArgumentException("用户已存在");
 		userService.register(name, password);
 		return Result.success();

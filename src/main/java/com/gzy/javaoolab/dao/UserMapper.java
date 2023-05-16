@@ -6,11 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * @description user
- * @author gzy
- * @date 2022-11-09
- */
+
 @Mapper
 @Repository
 public interface UserMapper {
@@ -43,9 +39,8 @@ public interface UserMapper {
 	 **/
 	User load(Integer id);
 
-	User loadByMail(String mail);
+	User loadByName(String name);
 
-	List<User> loadAllInList(List<Integer> ids);
 	/**
 	 * 查询 分页查询
 	 * @author gzy

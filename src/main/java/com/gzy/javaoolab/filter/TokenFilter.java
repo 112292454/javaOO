@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebFilter(urlPatterns = {"/app/*","/login/test/*"})
+@WebFilter(urlPatterns = {"/chat/*","/relation/*","/history/*","/group/*","/login/test/*"})
 //注：加上@component的话，主类不比写scan，但是上面配的pattern不生效，拦截全部
 public class TokenFilter implements Filter {
     private static Logger logger = LoggerFactory.getLogger(TokenFilter.class);
@@ -62,8 +62,9 @@ public class TokenFilter implements Filter {
         } else {
             if (null == token || token.isEmpty()) {
                 logger.info("用户授权认证没有通过!客户端请求参数中无token信息");
+                rep.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 rep.setHeader("code", String.valueOf(HttpServletResponse.SC_UNAUTHORIZED));
-                rep.setHeader("msg", "用户授权认证没有通过!客户端请求参数中无token信息");
+                rep.setHeader("msg",  "token is none!");
                 //chain.doFilter(req, rep);
             } else {
                 try {
@@ -80,8 +81,8 @@ public class TokenFilter implements Filter {
                         User user = userService.load(Integer.valueOf(userId));
                         logger.info("token的有效期小于过期时间的10%！");
                         Map<String, Object> data = new HashMap<>();
-                        data.put("mail", user.getMail());
-                        String newToken = jwtUtils.createJwt(user.getUserId()+"", user.getUsername(), data);
+                        data.put("email", user.getEmail());
+                        String newToken = jwtUtils.createJwt(user.getId()+"", user.getName(), data);
                         logger.info("已生成新的token：" + newToken);
                         rep.setHeader("code", String.valueOf(HttpServletResponse.SC_OK));
                         rep.setHeader("msg", "token has refreshed！");
