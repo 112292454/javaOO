@@ -4,6 +4,8 @@ package com.gzy.javaoolab.controller;
 import com.gzy.javaoolab.entity.Message;
 import com.gzy.javaoolab.service.MessageService;
 import com.gzy.javaoolab.vo.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,9 @@ import java.util.concurrent.CompletableFuture;
 @Controller("/chat")
 @RequestMapping(value = "/chat")
 public class ChatController {
+
+	Logger logger= LoggerFactory.getLogger(ChatController.class);
+
 
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
@@ -36,7 +41,8 @@ public class ChatController {
 		waitForAck.put(message.getId(), message);
 
 
-		CompletableFuture.supplyAsync(()->{//TODO:要有這個嗎
+		CompletableFuture.supplyAsync(()->{
+			//TODO:要有這個嗎
 			try {
 				Thread.sleep(1500);
 			} catch (InterruptedException e) {
@@ -59,7 +65,6 @@ public class ChatController {
 	@PostMapping("/ack")
 	@ResponseBody
 	public Result<?> ackMsg(String from,String msgId) {
-//		Message message=messageService.loadById(msgID);
 
 		waitForAck.remove(Long.parseLong(msgId));
 

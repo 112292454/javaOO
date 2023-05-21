@@ -4,6 +4,8 @@ import com.gzy.javaoolab.entity.Group;
 import com.gzy.javaoolab.service.GroupService;
 import com.gzy.javaoolab.service.MessageService;
 import com.gzy.javaoolab.vo.Result;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller("/group")
 @RequestMapping(value = "/group")
 public class GroupController {
+
+	Logger logger= LoggerFactory.getLogger(GroupController.class);
+
 
 	@Autowired
 	MessageService messageService;
@@ -49,7 +54,7 @@ public class GroupController {
 	 * @Return com.gzy.javaoolab.vo.Result<java.lang.String>
 	 * @Discription 创建群聊
 	 * @param user 创建者
-	 * @param groupId 群id
+	 * @param name 群名
 	 */
 	@PostMapping("/create")
 	@ResponseBody

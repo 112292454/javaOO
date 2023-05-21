@@ -1,5 +1,6 @@
 package com.gzy.javaoolab.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.Date;
  * @date 2023-05-16
  */
 @Data
+@AllArgsConstructor
 public class Message implements Serializable {
 
     private static final long serialVersionUID = 782674860786450L;
@@ -36,14 +38,14 @@ public class Message implements Serializable {
     private Date sendTime;
 
     /**
-     * viewed
+     * 是否被dest用户查看过了，若dest为群号，则无用
      */
     private int viewed;
 
     /**
      * 若为true，dest就是群号
      */
-    private int isgroupmsg;
+    private boolean isGroupMsg;
 
     /**
      * content
@@ -60,5 +62,6 @@ public class Message implements Serializable {
         this.sourceUser = sourceUser;
         this.dest = dest;
         this.content = content;
+        this.setSendTime(new Date());
     }
 }

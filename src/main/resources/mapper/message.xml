@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzy.javaoolab.dao.MessageMapper">
+
+    <resultMap id="BaseResultMap" type="com.gzy.javaoolab.entity.Message" >
+        <result column="id" property="id" />
+        <result column="source_user" property="sourceUser" />
+        <result column="dest" property="dest" />
+        <result column="send_time" property="sendTime" />
+        <result column="viewed" property="viewed" />
+        <result column="is_group_msg" property="isGroupMsg" />
+        <result column="content" property="content" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+                source_user,
+                dest,
+                send_time,
+                viewed,
+                is_group_msg,
+                content
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.gzy.javaoolab.entity.Message">
+        INSERT INTO message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != sourceUser and '' != sourceUser">
+                source_user,
+            </if>
+            <if test="null != dest and '' != dest">
+                dest,
+            </if>
+            <if test="null != sendTime">
+                send_time,
+            </if>
+            <if test="null != viewed and '' != viewed">
+                viewed,
+            </if>
+            <if test="null != isGroupMsg and '' != isGroupMsg">
+                is_group_msg,
+            </if>
+            <if test="null != content and '' != content">
+                content
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != sourceUser and '' != sourceUser">
+                #{sourceUser},
+            </if>
+            <if test="null != dest and '' != dest">
+                #{dest},
+            </if>
+            <if test="null != sendTime">
+                #{sendTime},
+            </if>
+            <if test="null != viewed and '' != viewed">
+                #{viewed},
+            </if>
+            <if test="null != isGroupMsg and '' != isGroupMsg">
+                #{isGroupMsg},
+            </if>
+            <if test="null != content and '' != content">
+                #{content}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM message
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.gzy.javaoolab.entity.Message">
+        UPDATE message
+        <set>
+            <if test="null != sourceUser and '' != sourceUser">source_user = #{sourceUser},</if>
+            <if test="null != dest and '' != dest">dest = #{dest},</if>
+            <if test="null != sendTime">send_time = #{sendTime},</if>
+            <if test="null != viewed and '' != viewed">viewed = #{viewed},</if>
+            <if test="null != isGroupMsg and '' != isGroupMsg">is_group_msg = #{isGroupMsg},</if>
+            <if test="null != content and '' != content">content = #{content}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="setViewed" >
+        UPDATE message
+        <set>
+            viewed = true
+        </set>
+        WHERE source_user = #{beViewedUser} AND dest=#{user}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM message
+        WHERE id = #{id}
+    </select>
+
+    <select id="loadAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM message
+        WHERE source_user = #{from} AND dest=#{to}
+    </select>
+
+    <select id="loadGroup" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM message
+        WHERE dest = #{group}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM message
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM message
+    </select>
+
+</mapper>

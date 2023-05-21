@@ -28,6 +28,8 @@ public interface MessageService {
 
 	List<Message> getMsgHistory(String from, String to);
 
+	List<Message> getGroupHistory(String group);
+
 	Message loadById(String id);
 
 }

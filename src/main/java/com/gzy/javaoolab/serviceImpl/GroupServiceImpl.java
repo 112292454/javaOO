@@ -35,8 +35,8 @@ public class GroupServiceImpl implements GroupService {
 				//TODO:并发
 				messageService.sendMsg(message);
 			}
-			//设置from用户既然已经发消息了，那默认他已经看完了上面的历史记录
-			messageService.setMessageViewed(from, group);
+			//群聊，不再在数据库做标记，只有定期删除，不管是不是有人妹看到
+//			messageService.setMessageViewed(from, group);
 			return Result.success("success");
 		}else return Result.error("发送失败，目标群聊不存在");
 	}

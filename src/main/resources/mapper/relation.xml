@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzy.javaoolab.dao.RelationMapper">
+
+    <resultMap id="BaseResultMap" type="com.gzy.javaoolab.entity.Relation" >
+        <result column="id" property="id" />
+        <result column="source_user" property="sourceUser" />
+        <result column="dest_user" property="destUser" />
+        <result column="status" property="status" />
+        <result column="set_time" property="setTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+                source_user,
+                dest_user,
+                status,
+                set_time
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.gzy.javaoolab.entity.Relation">
+        INSERT INTO relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != sourceUser and '' != sourceUser">
+                source_user,
+            </if>
+            <if test="null != destUser and '' != destUser">
+                dest_user,
+            </if>
+            <if test="null != status and '' != status">
+                status,
+            </if>
+            <if test="null != setTime ">
+                set_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != sourceUser and '' != sourceUser">
+                #{sourceUser},
+            </if>
+            <if test="null != destUser and '' != destUser">
+                #{destUser},
+            </if>
+            <if test="null != status and '' != status">
+                #{status},
+            </if>
+            <if test="null != setTime ">
+                #{setTime}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM relation
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.gzy.javaoolab.entity.Relation">
+        UPDATE relation
+        <set>
+            <if test="null != sourceUser and '' != sourceUser">source_user = #{sourceUser},</if>
+            <if test="null != destUser and '' != destUser">dest_user = #{destUser},</if>
+            <if test="null != status and '' != status">status = #{status},</if>
+            <if test="null != setTime">set_time = #{setTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM relation
+        WHERE source_user=#{from} AND dest_user=#{to}
+    </select>
+
+    <select id="loadAllRelationFrom" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM relation
+        WHERE source_user=#{from}
+    </select>
+
+    <select id="loadAllRelationFor" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM relation
+        WHERE dest_user=#{from}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM relation
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM relation
+    </select>
+
+</mapper>
