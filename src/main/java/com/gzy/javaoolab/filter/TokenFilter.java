@@ -90,6 +90,7 @@ public class TokenFilter implements Filter {
                     } else {
                         logger.info("用户授权认证通过!");
                         rep.setHeader("code", String.valueOf(HttpServletResponse.SC_OK));
+                        req.setAttribute("uid", userId);
                     }
                     chain.doFilter(req, rep);
                 } catch (Exception exception) {

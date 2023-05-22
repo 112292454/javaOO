@@ -23,6 +23,7 @@ public class RelationServiceImpl implements RelationService {
 
 	@Override
 	public Result<User> addRequest(Integer from, Integer to) {
+		if(from==to) return Result.error("不可自己对自己发起好友请求");
 		Relation check=relationMapper.load(from, to);
 		if(check!=null) {
 			if(check.isRequest()) return Result.error("已发送好友请求，请勿重复添加");
@@ -59,41 +60,45 @@ public class RelationServiceImpl implements RelationService {
 	}
 
 	@Override
-	public Result<List<Integer>> getAllFriends(Integer user) {
+	public Result<List<User>> getAllFriends(Integer user) {
 		List<Relation> allRelation = relationMapper.loadAllRelationFor(user);
 		allRelation.addAll(relationMapper.loadAllRelationFrom(user));
 
 
-		List<Integer> friendIds=allRelation.stream()
+		List<User> friendIds=allRelation.stream()
 				.filter(Relation::isFriend)
-				.mapToInt(a-> a.getSourceUser().equals(user) ?a.getDestUser():a.getSourceUser())
-				.boxed().toList();
+				.map(a-> a.getSourceUser().equals(user) ?a.getDestUser():a.getSourceUser())
+				.map(a->userMapper.load(a))
+				.toList();
+		friendIds.forEach(a->a.setPassword(null));
 
-		return Result.<List<Integer>>success("共"+friendIds.size()+"个好友").data(friendIds);
+		return Result.<List<User>>success("共"+friendIds.size()+"个好友").data(friendIds);
 	}
 
 	@Override
-	public Result<List<Integer>> getAllRequest(Integer user) {
+	public Result<List<User>> getAllRequest(Integer user) {
 		List<Relation> allRelation = relationMapper.loadAllRelationFor(user);
 
-		List<Integer> friendIds=allRelation.stream()
+		List<User> friendIds=allRelation.stream()
 				.filter(Relation::isRequest)
-				.mapToInt(Relation::getSourceUser)
-				.boxed().toList();
+				.map(a->userMapper.load(a.getSourceUser()))
+				.toList();
+		friendIds.forEach(a->a.setPassword(null));
 
-		return Result.<List<Integer>>success("共"+friendIds.size()+"个好友请求").data(friendIds);
+		return Result.<List<User>>success("共"+friendIds.size()+"个好友请求").data(friendIds);
 	}
 
 	@Override
-	public Result<List<Integer>> getSentRequest(Integer user) {
+	public Result<List<User>> getSentRequest(Integer user) {
 		List<Relation> allRelation = relationMapper.loadAllRelationFrom(user);
 
-		List<Integer> friendIds=allRelation.stream()
+		List<User> friendIds=allRelation.stream()
 				.filter(a->!a.isFriend())//只要不是已添加的好友，都是要显示为请求的
-				.mapToInt(Relation::getDestUser)
-				.boxed().toList();
+				.map(a->userMapper.load(a.getDestUser()))
+				.toList();
+		friendIds.forEach(a->a.setPassword(null));
 
-		return Result.<List<Integer>>success("共"+friendIds.size()+"个好友请求").data(friendIds);
+		return Result.<List<User>>success("共"+friendIds.size()+"个好友请求").data(friendIds);
 	}
 
 
