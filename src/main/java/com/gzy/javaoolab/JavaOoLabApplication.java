@@ -1,5 +1,6 @@
 package com.gzy.javaoolab;
 
+import com.gzy.javaoolab.utils.FaceModelInstance;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -14,7 +15,8 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 public class JavaOoLabApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(JavaOoLabApplication.class, args);
-	}
+        SpringApplication.run(JavaOoLabApplication.class, args);
+        FaceModelInstance.getInstance().init();
+    }
 
 }
