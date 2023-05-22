@@ -1,5 +1,6 @@
 package com.gzy.javaoolab.controller;
 
+import com.gzy.javaoolab.entity.User;
 import com.gzy.javaoolab.service.RelationService;
 import com.gzy.javaoolab.vo.Result;
 import org.slf4j.Logger;
@@ -37,18 +38,18 @@ public class RelationController {
 	}
 
 	@PostMapping("friends")
-	public Result<List<Integer>> getFriends(String user) {
+	public Result<List<User>> getFriends(String user) {
 		return relationService.getAllFriends(Integer.valueOf(user));
 	}
 
 	@PostMapping("request")
-	public Result<List<Integer>> getRequests(String user) {
+	public Result<List<User>> getRequests(String user) {
 		//获取谁对user发起了好友请求
 		return relationService.getAllRequest(Integer.valueOf(user));
 	}
 
 	@PostMapping("my_request")
-	public Result<List<Integer>> getsentRequests(String user) {
+	public Result<List<User>> getsentRequests(String user) {
 		//获取user对谁发起了好友请求，包含被拒绝的
 		return relationService.getSentRequest(Integer.valueOf(user));
 	}

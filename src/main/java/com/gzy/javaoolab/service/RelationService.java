@@ -14,10 +14,10 @@ public interface RelationService {
 
 	Result<User> denyRequest(Integer from,Integer to);
 
-	Result<List<Integer>> getAllFriends(Integer user);
+	Result<List<User>> getAllFriends(Integer user);
 
-	Result<List<Integer>> getAllRequest(Integer user);
+	Result<List<User>> getAllRequest(Integer user);
 
 
-	Result<List<Integer>> getSentRequest(Integer user);
+	Result<List<User>> getSentRequest(Integer user);
 }
