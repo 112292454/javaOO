@@ -60,7 +60,7 @@ public class Result<T> {
 	}
 
 	public boolean isSuccess() {
-		return this.statusCode==HttpServletResponse.SC_OK;
+		return this.statusCode != HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
 	}
 
 

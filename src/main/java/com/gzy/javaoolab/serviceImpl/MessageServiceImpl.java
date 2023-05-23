@@ -3,8 +3,8 @@ package com.gzy.javaoolab.serviceImpl;
 import com.gzy.javaoolab.dao.MessageMapper;
 import com.gzy.javaoolab.entity.Message;
 import com.gzy.javaoolab.service.MessageService;
+import com.gzy.javaoolab.utils.WebSocketUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -13,24 +13,24 @@ import java.util.List;
 @Service
 public class MessageServiceImpl implements MessageService {
 
-	@Autowired
-	SimpMessagingTemplate simpMessagingTemplate;
+//	@Autowired
+//	SimpMessagingTemplate simpMessagingTemplate;
 
 	@Autowired
 	MessageMapper messageMapper;
 
 
 	@Override
-	public Message sendMsg(Message message) {
-		simpMessagingTemplate.convertAndSendToUser(String.valueOf(message.getSourceUser()), "/", message);
+	public boolean sendMsg(Message message) {
+		boolean sendRes = WebSocketUtil.send(String.valueOf(message.getDest()), message);
 
 		//设置from用户既然已经发消息了，那默认他已经看完了上面的历史记录
 		setMessageViewed(message.getSourceUser()+"",message.getDest()+"");
-		return message;
+		return sendRes;
 	}
 
 	@Override
-	public Message sendMsg(String from, String to, String msg) {
+	public boolean sendMsg(String from, String to, String msg) {
 		return sendMsg(persistenceMessage(from, to, msg));
 	}
 
