@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzy.javaoolab.dao.GroupMapper">
+
+    <resultMap id="BaseResultMap" type="com.gzy.javaoolab.entity.Group" >
+        <result column="id" property="id" />
+        <result column="group_name" property="groupName" />
+        <result column="group_size" property="groupSize" />
+        <result column="group_avatar_id" property="groupAvatarId" />
+        <result column="owner" property="owner" />
+        <result column="level" property="level" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+                group_name,
+                group_size,
+                group_avatar_id,
+                owner,
+                level
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.gzy.javaoolab.entity.Group">
+        INSERT INTO group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != groupName and '' != groupName">
+                group_name,
+            </if>
+            <if test="null != groupSize and '' != groupSize">
+                group_size,
+            </if>
+            <if test="null != groupAvatarId and '' != groupAvatarId">
+                group_avatar_id,
+            </if>
+            <if test="null != owner and '' != owner">
+                owner,
+            </if>
+            <if test="null != level and '' != level">
+                level
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != groupName and '' != groupName">
+                #{groupName},
+            </if>
+            <if test="null != groupSize and '' != groupSize">
+                #{groupSize},
+            </if>
+            <if test="null != groupAvatarId and '' != groupAvatarId">
+                #{groupAvatarId},
+            </if>
+            <if test="null != owner and '' != owner">
+                #{owner},
+            </if>
+            <if test="null != level and '' != level">
+                #{level}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM group
+        WHERE id = #{id}
+    </delete>
+
+    <update id="update" parameterType="com.gzy.javaoolab.entity.Group">
+        UPDATE group
+        <set>
+            <if test="null != groupName and '' != groupName">group_name = #{groupName},</if>
+            <if test="null != groupSize and '' != groupSize">group_size = #{groupSize},</if>
+            <if test="null != groupAvatarId and '' != groupAvatarId">group_avatar_id = #{groupAvatarId},</if>
+            <if test="null != owner and '' != owner">owner = #{owner},</if>
+            <if test="null != level and '' != level">level = #{level}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="loadById" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM group
+        WHERE id=#{id}
+    </select>
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM group
+        WHERE group_name=#{name} and owner=#{owner}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM group
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM group
+    </select>
+
+</mapper>

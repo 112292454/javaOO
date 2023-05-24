@@ -5,7 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @description group
@@ -49,10 +50,56 @@ public class Group implements Serializable {
      */
     private Integer level;
 
+    public Group addMember(Integer member) {
+        if(this.members==null) this.members=new HashMap<>();
+        this.members.put(member,"member");
+        return this;
+    }
+    public Group addAdmin(Integer member) {
+        if(this.members==null) this.members=new HashMap<>();
+        this.members.put(member,"member");
+        return this;
+    }
+
+
+    public void setLevel(Integer level) {
+        this.level = level;
+        this.groupSize = level2Size.get(this.level);
+    }
+
+    static Map<Integer,Integer> level2Size=new HashMap<>();
+    static {
+        level2Size.put(0, 10);
+        level2Size.put(1,200);
+        level2Size.put(2,500);
+        level2Size.put(3,1000);
+        level2Size.put(4, 2000);
+    }
+
     /**
      * members
      */
-    private transient List<Integer> members;
+    private transient Map<Integer,String> members;
 
-    public Group() {}
+    public Group() {
+        this.members=new HashMap<>();
+    }
+
+    public Group(String groupName, Integer owner) {
+        this(groupName,owner,1);
+    }
+
+
+    public Group(String groupName, Integer owner, Integer level) {
+        this(groupName,level2Size.get(level),owner,level,new HashMap<>());
+    }
+
+    public Group(String groupName, Integer groupSize, Integer owner, Integer level, Map<Integer,String> members) {
+        this.groupName = groupName;
+        this.groupSize = groupSize;
+        this.owner = owner;
+        this.level = level;
+        this.members = members;
+        if(this.members.isEmpty()) this.members.put(owner,"owner");
+    }
 }

@@ -35,15 +35,14 @@ public class GroupController {
 	 * @Return com.gzy.javaoolab.vo.Result<java.lang.String>
 	 * @Discription
 	 * @param from 发送用户id
-	 * @param group 群id
+	 * @param to 群id
 	 * @param msg 消息内容
 	 */
 	@PostMapping("/send")
 	@ResponseBody
-	//TODO:未做
-	public Result<Group> sendMsgToGroup(String from, String group, String msg) {
+	public Result<Group> sendMsgToGroup(String from, String to, String msg) {
 
-		return groupService.senMsg(from, group, msg);
+		return groupService.senMsg(from, to, msg);
 	}
 
 	/**

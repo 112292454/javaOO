@@ -85,6 +85,12 @@
         WHERE id = #{id}
     </select>
 
+    <select id="loadByList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user
+        WHERE id in #{ids}
+    </select>
+
     <select id="loadByName" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
         FROM user

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gzy.javaoolab.dao.UserGroupMapper">
+
+    <resultMap id="BaseResultMap" type="com.gzy.javaoolab.entity.UserInGroup" >
+        <result column="user_id" property="userId" />
+        <result column="group_id" property="groupId" />
+        <result column="last_viewed" property="lastViewed" />
+        <result column="type" property="type" />
+        <result column="join_time" property="joinTime" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        user_id,
+                group_id,
+                last_viewed,
+                'type',
+                join_time
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.gzy.javaoolab.entity.UserInGroup">
+        INSERT INTO user_group_map
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="null != userId and '' != userId">
+                user_id,
+            </if>
+            <if test="null != groupId and '' != groupId">
+                group_id,
+            </if>
+            <if test="null != lastViewed and '' != lastViewed">
+                last_viewed,
+            </if>
+            <if test="null != type and '' != type">
+                type,
+            </if>
+            <if test="null != joinTime and '' != joinTime">
+                join_time
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="null != userId and '' != userId">
+                #{userId},
+            </if>
+            <if test="null != groupId and '' != groupId">
+                #{groupId},
+            </if>
+            <if test="null != lastViewed and '' != lastViewed">
+                #{lastViewed},
+            </if>
+            <if test="null != type and '' != type">
+                #{type},
+            </if>
+            <if test="null != joinTime and '' != joinTime">
+                #{joinTime}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delete" >
+        DELETE FROM user_group_map
+        WHERE user_id=#{uid} and group_id=#{gid}
+    </delete>
+
+    <update id="update" parameterType="com.gzy.javaoolab.entity.UserInGroup">
+        UPDATE user_group_map
+        <set>
+            <if test="null != userId and '' != userId">user_id = #{userId},</if>
+            <if test="null != groupId and '' != groupId">group_id = #{groupId},</if>
+            <if test="null != lastViewed and '' != lastViewed">last_viewed = #{lastViewed},</if>
+            <if test="null != type and '' != type">'type' = #{type},</if>
+            <if test="null != joinTime and '' != joinTime">join_time = #{joinTime}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <select id="load" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user_group_map
+        WHERE id = #{id}
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user_group_map
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM user_group_map
+    </select>
+
+</mapper>
