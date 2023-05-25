@@ -22,7 +22,7 @@
     </sql>
 
     <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id" parameterType="com.gzy.javaoolab.entity.Group">
-        INSERT INTO group
+        INSERT INTO `group`
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="null != groupName and '' != groupName">
                 group_name,
@@ -60,12 +60,12 @@
     </insert>
 
     <delete id="delete" >
-        DELETE FROM group
+        DELETE FROM `group`
         WHERE id = #{id}
     </delete>
 
     <update id="update" parameterType="com.gzy.javaoolab.entity.Group">
-        UPDATE group
+        UPDATE `group`
         <set>
             <if test="null != groupName and '' != groupName">group_name = #{groupName},</if>
             <if test="null != groupSize and '' != groupSize">group_size = #{groupSize},</if>
@@ -78,25 +78,36 @@
 
     <select id="loadById" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
-        FROM group
+        FROM `group`
         WHERE id=#{id}
     </select>
 
+    <select id="loadByUser" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM `group`
+        where id in
+              (select group_id
+               from user_group_map
+               where user_id=#{uid})
+    </select>
+
+
+
     <select id="load" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
-        FROM group
+        FROM `group`
         WHERE group_name=#{name} and owner=#{owner}
     </select>
 
     <select id="pageList" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
-        FROM group
+        FROM `group`
         LIMIT #{offset}, #{pageSize}
     </select>
 
     <select id="pageListCount" resultType="java.lang.Integer">
         SELECT count(1)
-        FROM group
+        FROM `group`
     </select>
 
 </mapper>

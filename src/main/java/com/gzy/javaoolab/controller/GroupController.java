@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller("/group")
 @RequestMapping(value = "/group")
 public class GroupController {
@@ -69,12 +71,12 @@ public class GroupController {
 	 * @Return com.gzy.javaoolab.vo.Result<java.lang.String>
 	 * @Discription 褪裙
 	 * @param user
-	 * @param groupId
+	 * @param group
 	 */
 	@PostMapping("/exit")
 	@ResponseBody
-	public Result<Group> exitGroup(String user,String groupId){
-		return groupService.exitGroup(user, groupId);
+	public Result<Group> exitGroup(String user,String group){
+		return groupService.exitGroup(user, group);
 	}
 
 	/**
@@ -84,14 +86,14 @@ public class GroupController {
 	 * @CreateTime   2023-05-09 02:46
 	 * @Return com.gzy.javaoolab.vo.Result<java.lang.String>
 	 * @Discription 某用户拉入另一个用户到群里
-	 * @param fromUser 发起请求的用户
-	 * @param inviteUser 被拉的用户
+	 * @param from 发起请求的用户
+	 * @param invite 被拉的用户
 	 * @param group 群
 	 */
 	@PostMapping("/invite")
 	@ResponseBody
-	public Result<Group> addUser(String fromUser,String inviteUser,String group){
-		return groupService.inviteUser(fromUser, inviteUser, group);
+	public Result<Group> addUser(String from,String invite,String group){
+		return groupService.inviteUser(from, invite, group);
 	}
 
 	/**
@@ -127,5 +129,18 @@ public class GroupController {
 	}
 
 
-
+	/**
+	 *
+	 *
+	 * @Author  Guo
+	 * @CreateTime   2023-05-09 02:46
+	 * @Return com.gzy.javaoolab.vo.Result<java.lang.String>
+	 * @Discription 获取用户加入的群
+	 * @param user
+	 */
+	@PostMapping("/groups")
+	@ResponseBody
+	public Result<List<Group>> loadGroupsByUser(String user){
+		return groupService.loadGroups(user);
+	}
 }

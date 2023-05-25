@@ -12,6 +12,8 @@ public interface MessageService {
 
 	boolean sendMsg(String from, String to, String msg);
 
+	boolean sendMsg(String from, String to, Message msg);
+
 	boolean persistenceMessage(Message message);
 
 	Message persistenceMessage(String from, String to, String msg);

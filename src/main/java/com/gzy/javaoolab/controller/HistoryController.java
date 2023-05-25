@@ -35,7 +35,7 @@ public class HistoryController {
 
 	@PostMapping("/group")
 	@ResponseBody
-	public Result<?> getGroupHistory(String group) {
+	public Result<List<Message>> getGroupHistory(String group) {
 		List<Message> msgHistory = messageService.getGroupHistory(group);
 
 		return Result.<List<Message>>success("成功获取历史记录").data(msgHistory);

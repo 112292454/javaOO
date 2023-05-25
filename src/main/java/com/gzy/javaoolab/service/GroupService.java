@@ -22,4 +22,6 @@ public interface GroupService {
 	Result<Group> upgradeGroup(String owner,String groupId);
 
 	Result<Group> groupInfo(String groupId);
+
+	Result<List<Group>> loadGroups(String uid);
 }

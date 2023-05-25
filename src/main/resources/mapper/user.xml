@@ -88,7 +88,10 @@
     <select id="loadByList" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
         FROM user
-        WHERE id in #{ids}
+        WHERE id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
     <select id="loadByName" resultMap="BaseResultMap">

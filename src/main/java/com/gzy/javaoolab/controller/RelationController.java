@@ -42,6 +42,7 @@ public class RelationController {
 		return relationService.getAllFriends(Integer.valueOf(user));
 	}
 
+
 	@PostMapping("request")
 	public Result<List<User>> getRequests(String user) {
 		//获取谁对user发起了好友请求

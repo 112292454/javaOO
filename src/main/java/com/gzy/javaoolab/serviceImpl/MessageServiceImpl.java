@@ -22,16 +22,24 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public boolean sendMsg(Message message) {
-		boolean sendRes = WebSocketUtil.send(String.valueOf(message.getDest()), message);
-
-		//设置from用户既然已经发消息了，那默认他已经看完了上面的历史记录
-		setMessageViewed(message.getSourceUser()+"",message.getDest()+"");
-		return sendRes;
+		return sendMsg(message.getSourceUser()+"", message.getDest()+"", message);
 	}
 
 	@Override
 	public boolean sendMsg(String from, String to, String msg) {
 		return sendMsg(persistenceMessage(from, to, msg));
+	}
+
+	@Override
+	public boolean sendMsg(String from, String to, Message msg) {
+		Integer source = Integer.valueOf(from);
+		Integer dest = Integer.valueOf(to);
+
+		boolean sendRes = WebSocketUtil.send(String.valueOf(dest), msg);
+
+		//设置from用户既然已经发消息了，那默认他已经看完了上面的历史记录
+		setMessageViewed(source+"",dest+"");
+		return sendRes;
 	}
 
 	@Override

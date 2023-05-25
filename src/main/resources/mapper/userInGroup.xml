@@ -15,7 +15,7 @@
         user_id,
                 group_id,
                 last_viewed,
-                'type',
+                type,
                 join_time
     </sql>
 
@@ -68,7 +68,7 @@
             <if test="null != userId and '' != userId">user_id = #{userId},</if>
             <if test="null != groupId and '' != groupId">group_id = #{groupId},</if>
             <if test="null != lastViewed and '' != lastViewed">last_viewed = #{lastViewed},</if>
-            <if test="null != type and '' != type">'type' = #{type},</if>
+            <if test="null != type and '' != type">type = #{type},</if>
             <if test="null != joinTime and '' != joinTime">join_time = #{joinTime}</if>
         </set>
         WHERE id = #{id}
@@ -78,7 +78,13 @@
     <select id="load" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
         FROM user_group_map
-        WHERE id = #{id}
+        WHERE group_id = #{gid} and user_id=#{uid}
+    </select>
+
+    <select id="loadByGroup" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user_group_map
+        WHERE group_id = #{gid}
     </select>
 
     <select id="pageList" resultMap="BaseResultMap">

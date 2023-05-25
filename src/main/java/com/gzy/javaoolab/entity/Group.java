@@ -45,6 +45,11 @@ public class Group implements Serializable {
      */
     private Integer owner;
 
+    public void setOwner(Integer owner) {
+        this.owner = owner;
+        if(this.members.isEmpty()) this.members.put(owner,"owner");
+    }
+
     /**
      * level
      */
@@ -57,7 +62,7 @@ public class Group implements Serializable {
     }
     public Group addAdmin(Integer member) {
         if(this.members==null) this.members=new HashMap<>();
-        this.members.put(member,"member");
+        this.members.put(member,"admin");
         return this;
     }
 
@@ -100,6 +105,7 @@ public class Group implements Serializable {
         this.owner = owner;
         this.level = level;
         this.members = members;
+        this.groupAvatarId=2;
         if(this.members.isEmpty()) this.members.put(owner,"owner");
     }
 }

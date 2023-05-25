@@ -1,6 +1,5 @@
 package com.gzy.javaoolab.serviceImpl;
 
-import com.alibaba.fastjson2.JSON;
 import com.gzy.javaoolab.dao.GroupMapper;
 import com.gzy.javaoolab.dao.UserGroupMapper;
 import com.gzy.javaoolab.dao.UserMapper;
@@ -11,12 +10,15 @@ import com.gzy.javaoolab.entity.UserInGroup;
 import com.gzy.javaoolab.service.GroupService;
 import com.gzy.javaoolab.service.MessageService;
 import com.gzy.javaoolab.vo.Result;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -46,7 +48,7 @@ public class GroupServiceImpl implements GroupService {
 			List<User> users = userMapper.loadByList(groupResult.getData().getMembers().keySet().stream().toList());
 			for (User user : users) {
 				CompletableFuture.supplyAsync(()->{
-					return messageService.sendMsg(from,user.getId()+"", JSON.toJSONString(message));
+					return messageService.sendMsg(from,user.getId()+"", message);
 				});
 			}
 
@@ -64,7 +66,11 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public Result<Group> createGroup(String user, String groupName) {
 		Group res=new Group(groupName,Integer.parseInt(user));
-		groupMapper.insert(res);
+		try {
+			groupMapper.insert(res);
+		} catch (Exception e) {
+			return Result.error("群已存在！");
+		}
 		res=groupMapper.load(res.getOwner(), res.getGroupName());
 		updateMembers(res);
 
@@ -72,15 +78,14 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	private void updateMembers(Group res) {
-		Group finalRes = res;
-		res.getMembers().forEach((k,v)-> userGroupMapper.insert(new UserInGroup(k, finalRes.getId())));
+		batchInsert(res);
 	}
 
 	@Override
-	public Result<Group> exitGroup(String userId, String groupId) {
-		int res=userGroupMapper.delete(Integer.parseInt(userId), Integer.parseInt(groupId));
+	public Result<Group> exitGroup(String user, String group) {
+		int res=userGroupMapper.delete(Integer.parseInt(user), Integer.parseInt(group));
 		assert res<=1;
-		return Result.<Group>success().data(groupInfo(groupId).getData());
+		return Result.<Group>success().data(groupInfo(group).getData());
 	}
 
 	@Override
@@ -99,23 +104,33 @@ public class GroupServiceImpl implements GroupService {
 		return Result.<Group>success().data(res);
 	}
 
-	@Overridegroup
+	@Override
 	public Result<Group> groupInfo(String group) {
 		Group res=groupMapper.loadById(Integer.parseInt(group));
+		return groupInfo(res);
+	}
+
+	private Result<Group> groupInfo(Group group) {
 		if(group==null) return Result.error("群聊不存在");
-		List<UserInGroup> userInGroups = userGroupMapper.loadByGroup(Integer.parseInt(group));
+		List<UserInGroup> userInGroups = userGroupMapper.loadByGroup(group.getId());
 		userInGroups.forEach(a->{
-			if(a.isAdmin()) res.addAdmin(a.getUserId());
-			else res.addMember(a.getUserId());
+			if(a.isAdmin()) group.addAdmin(a.getUserId());
+			else if(a.isMember()) group.addMember(a.getUserId());
 		});
-		return Result.<Group>success().data(res);
+		return Result.<Group>success().data(group);
+	}
+
+	@Override
+	public Result<List<Group>> loadGroups(String uid) {
+		List<Group> res=groupMapper.loadByUser(Integer.parseInt(uid)).stream().map(a->groupInfo(a).getData()).collect(Collectors.toList());
+		return Result.<List<Group>>success().data(res);
 	}
 
 
-//	private List<User> batchLoad(List<Integer> ids) {
-//		SqlSession sqlSession = sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH);
-//		UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-//		ids.forEach(mapper::load);
-//		sqlSession.flushStatements().stream().map(a->a.);
-//	}
+	private void batchInsert(Group group) {
+		SqlSession sqlSession = sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH);
+		UserGroupMapper userGroupMapper = sqlSession.getMapper(UserGroupMapper.class);
+		group.getMembers().forEach((k, v)-> userGroupMapper.insert(new UserInGroup(k, group.getId(),v)));
+		sqlSession.flushStatements();
+	}
 }

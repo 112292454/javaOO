@@ -44,7 +44,7 @@ public interface UserGroupMapper {
 	 **/
 	UserInGroup load(@Param("uid") int uid,@Param("gid") int gid);
 
-	List<UserInGroup> loadByGroup(int group);
+	List<UserInGroup> loadByGroup(int gid);
 
 	/**
 	 * 查询 分页查询

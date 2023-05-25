@@ -19,6 +19,9 @@ public class UserInGroup implements Serializable {
     private static final long serialVersionUID = 8416941605840L;
 
     @TableId(type = IdType.AUTO)
+
+    private Integer id;
+
     /**
      * 用户a
      */

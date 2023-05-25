@@ -44,6 +44,8 @@ public interface GroupMapper {
 	 **/
 	Group loadById(int id);
 
+	List<Group> loadByUser(int uid);
+
 	Group load(@Param("owner") int owner, @Param("name") String groupName);
 
 	/**
