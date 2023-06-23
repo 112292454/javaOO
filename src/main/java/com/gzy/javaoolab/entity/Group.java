@@ -50,6 +50,11 @@ public class Group implements Serializable {
         if(this.members.isEmpty()) this.members.put(owner,"owner");
     }
 
+    public void setId(Integer id) {
+        if(id<=10000) id+=10000;
+        this.id = id;
+    }
+
     /**
      * level
      */
