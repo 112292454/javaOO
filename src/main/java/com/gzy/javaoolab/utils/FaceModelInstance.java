@@ -96,6 +96,9 @@ public class FaceModelInstance {
         DoublePointer confidence = new DoublePointer(1);
         faceRecognizer.predict(mat, label, confidence);
         logger.info("Predicted label: " + label.get(0) + "Confidence: " + confidence.get(0));
+        if(confidence.get(0)>4000){
+            return 0;
+        }
         return label.get(0);
     }
 }
