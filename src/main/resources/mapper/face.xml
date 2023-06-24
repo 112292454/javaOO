@@ -9,10 +9,9 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id
-        ,
-                label,
-                img
+        id,
+        label,
+        img
     </sql>
 
     <insert id="insert" useGeneratedKeys="true" keyColumn="id" keyProperty="id"
@@ -37,7 +36,6 @@
     </insert>
 
     <select id="loadAll" resultMap="BaseResultMap">
-        SELECT *
-        FROM face
+        SELECT * FROM face
     </select>
 </mapper>

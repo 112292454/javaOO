@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class FaceImgReq {
     @NotEmpty(message = "用户ID不能为空")
-    private long id;
+    private String name;
 
     @NotEmpty(message = "人脸图片不能为空")
     private ArrayList<String> faceImages;
@@ -14,12 +14,12 @@ public class FaceImgReq {
     //getter and setter
 
 
-    public long getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setId(String name) {
+        this.name = name;
     }
 
     public ArrayList<String> getFaceImages() {
