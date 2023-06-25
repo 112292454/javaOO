@@ -1,10 +1,11 @@
 package com.gzy.javaoolab.filter;
 
+import com.alibaba.fastjson2.JSON;
 import com.gzy.javaoolab.entity.User;
 import com.gzy.javaoolab.service.UserService;
 import com.gzy.javaoolab.utils.JwtUtils;
+import com.gzy.javaoolab.vo.Result;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import jakarta.annotation.Resource;
 import jakarta.servlet.*;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -77,11 +79,15 @@ public class TokenFilter implements Filter {
                         logger.info("token已过期！");
                         rep.setHeader("code", String.valueOf(HttpServletResponse.SC_UNAUTHORIZED));
                         rep.setHeader("msg", "token is overtime！");
+                        response.setContentType("application/json");
+                        response.getWriter().println(JSON.toJSON(Result.error("token已过期！")));
                         return;//不允许继续
                     }else if(expiration.getTime()-failureTime<userService.getLoginTime(Integer.valueOf(userId)).getTime()-5000) {
                         logger.info("该用户已在其他地点登录，此token无效！");
                         rep.setHeader("code", String.valueOf(HttpServletResponse.SC_UNAUTHORIZED));
                         rep.setHeader("msg", "has been login at other place,this token is expired");
+                        response.setContentType("application/json");
+                        response.getWriter().println(JSON.toJSON(Result.error("该用户已在其他地点登录，此token无效！")));
                         return;
                     }else if (validTime < failureTime / 10) {
                         User user = userService.load(Integer.valueOf(userId));
@@ -104,14 +110,14 @@ public class TokenFilter implements Filter {
                         logger.warn("token sign解析失败");
                         rep.setHeader("code", String.valueOf(HttpServletResponse.SC_UNAUTHORIZED));
                         rep.setHeader("msg", "token is invalid! ");
-                    } else if (MalformedJwtException.class.getName().equals(exception)) {
-                        logger.warn("token sign解析失败");
-                        rep.setHeader("code", String.valueOf(HttpServletResponse.SC_UNAUTHORIZED));
-                        rep.setHeader("msg", "token is invalid! ");
-                    }else{
+                        response.setContentType("application/json");
+                        response.getWriter().println(JSON.toJSON(Result.error("token sign解析失败")));
+                    } else {
                         logger.warn("token 未知原因解析失败:{}",exception.getMessage());
                         rep.setHeader("code", String.valueOf(HttpServletResponse.SC_UNAUTHORIZED));
                         rep.setHeader("msg", "token is invalid! ");
+                        response.setContentType("application/json");
+                        response.getWriter().println(JSON.toJSON(Result.error("token 未知原因解析失败:{}")));
                         //exception.printStackTrace();
                     }
                     //chain.doFilter(req, rep);
