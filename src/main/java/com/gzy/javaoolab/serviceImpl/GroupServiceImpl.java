@@ -122,7 +122,8 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public Result<List<Group>> loadGroups(String uid) {
-		List<Group> res=groupMapper.loadByUser(Integer.parseInt(uid)).stream().map(a->groupInfo(a).getData()).collect(Collectors.toList());
+		List<Group> groups = groupMapper.loadByUser(Integer.parseInt(uid));
+		List<Group> res= groups.stream().map(a->groupInfo(a).getData()).collect(Collectors.toList());
 		return Result.<List<Group>>success().data(res);
 	}
 
