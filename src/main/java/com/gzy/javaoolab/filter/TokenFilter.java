@@ -72,12 +72,17 @@ public class TokenFilter implements Filter {
                     String userId = claims.getId();
                     Date expiration = claims.getExpiration();
                     long validTime = expiration.getTime() - System.currentTimeMillis();
+
                     if (validTime < 0) {
                         logger.info("token已过期！");
                         rep.setHeader("code", String.valueOf(HttpServletResponse.SC_UNAUTHORIZED));
                         rep.setHeader("msg", "token is overtime！");
                         return;//不允许继续
-                    } else if (validTime < failureTime / 10) {
+                    }else if(expiration.getTime()-failureTime<userService.getLoginTime(Integer.valueOf(userId)).getTime()) {
+                        logger.info("该用户已在其他地点登录，此token无效！");
+                        rep.setHeader("code", String.valueOf(HttpServletResponse.SC_UNAUTHORIZED));
+                        rep.setHeader("msg", "has been login at other place,this token is expired");
+                    }else if (validTime < failureTime / 10) {
                         User user = userService.load(Integer.valueOf(userId));
                         logger.info("token的有效期小于过期时间的10%！");
                         Map<String, Object> data = new HashMap<>();
@@ -88,7 +93,7 @@ public class TokenFilter implements Filter {
                         rep.setHeader("msg", "token has refreshed！");
                         rep.setHeader("newToken", newToken);
                     } else {
-                        logger.info("用户授权认证通过!");
+                        logger.debug("用户授权认证通过!");
                         rep.setHeader("code", String.valueOf(HttpServletResponse.SC_OK));
                         req.setAttribute("uid", userId);
                     }

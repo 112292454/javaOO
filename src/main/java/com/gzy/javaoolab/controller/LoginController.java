@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ public class LoginController {
 
 	@Resource
 	private JwtUtils jwtUtils;
+
 
 	@PostMapping("/login")
 	@ApiResponses({
@@ -64,6 +66,7 @@ public class LoginController {
 			Map<String,Object> res=new HashMap<>();
 			res.put("token", token);
 			res.put("uid", user.getId());
+			userService.addLoginTime(user.getId(), new Date());
 			return Result.success("登陆成功").data(res);
 		}
 	}

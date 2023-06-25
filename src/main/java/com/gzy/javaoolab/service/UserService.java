@@ -2,6 +2,7 @@ package com.gzy.javaoolab.service;
 
 import com.gzy.javaoolab.entity.User;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 /**
@@ -34,6 +35,10 @@ public interface UserService {
 	public List<User> loadAll();
 
 	public User loadByName(String name);
+
+	Date getLoginTime(Integer userId);
+
+	void addLoginTime(Integer userId,Date time);
 
 	public boolean contains(String name);
 	/**

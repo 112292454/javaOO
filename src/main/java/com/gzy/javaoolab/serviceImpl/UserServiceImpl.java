@@ -7,6 +7,7 @@ import com.gzy.javaoolab.vo.Result;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
 
+    HashMap<Integer, Date> id_time_token=new HashMap<>();
 
     @Override
     public Object insert(User user) {
@@ -56,13 +58,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> loadAll() {
-        //TODO
-        return null;
+        List<User> users = userMapper.loadAll();
+        users.forEach(a->{
+            a.setPassword(null);
+            a.setEmail(null);
+            a.setLastLogin(null);
+            a.setAvatarId(null);
+        });
+        return users;
     }
 
     @Override
     public User loadByName(String name) {
         return userMapper.loadByName(name);
+    }
+
+    @Override
+    public Date getLoginTime(Integer userId) {
+        return id_time_token.get(userId);
+    }
+
+    @Override
+    public void addLoginTime(Integer userId, Date time) {
+        id_time_token.put(userId, new Date());
     }
 
     @Override

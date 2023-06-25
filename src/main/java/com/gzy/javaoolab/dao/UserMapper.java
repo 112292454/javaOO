@@ -41,6 +41,9 @@ public interface UserMapper {
 
 	List<User> loadByList(List<Integer> ids);
 
+	List<User> loadAll();
+
+
 	User loadByName(String name);
 
 	/**

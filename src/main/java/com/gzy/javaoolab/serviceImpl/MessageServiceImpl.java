@@ -73,6 +73,7 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public List<Message> getMsgHistory(String from, String to) {
 		List<Message> res=messageMapper.loadAll(from, to);
+
 		setMessageViewed(from, to);
 		res.addAll(messageMapper.loadAll(to, from));
 		setMessageViewed(to, from);

@@ -94,6 +94,11 @@
         </foreach>
     </select>
 
+    <select id="loadAll" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user
+    </select>
+
     <select id="loadByName" resultMap="BaseResultMap">
         SELECT <include refid="Base_Column_List" />
         FROM user

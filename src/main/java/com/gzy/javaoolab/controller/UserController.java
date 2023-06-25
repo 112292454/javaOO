@@ -43,7 +43,7 @@ public class UserController {
 		return Result.success();
 	}
 
-	@GetMapping("/register")
+	@GetMapping("/loadAll")
 	@ResponseBody
 	public Result<List<User>> listAllUSer() {
 		return Result.<List<User>>success("成功获取所有用户信息，但建议不要用这个接口").data(userService.loadAll());
