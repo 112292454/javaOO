@@ -19,10 +19,7 @@ import com.gzy.javaoolab.vo.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -69,9 +66,12 @@ public class FaceController {
             Map<String,Object> data=new HashMap<>();
             data.put("email",user.getEmail());
             String token= jwtUtils.createJwt(String.valueOf(user.getId()),user.getName(),data);
+
             Map<String,Object> res=new HashMap<>();
             res.put("token", token);
             res.put("uid", user.getId());
+            userService.addLoginTime(user.getId(), new Date());
+
             return Result.success("登陆成功").data(res);
         }
 
